@@ -1,0 +1,107 @@
+<html>
+    <head>
+        <link href="/Content/site.css" rel="stylesheet">
+        <link href="/Content/bootstrap.css" rel="stylesheet">
+        <script src="/Scripts/modernizr-2.6.2.js"></script>
+        <link href="/Content/themes/base/jquery.ui.core.css" rel="stylesheet">
+        <link href="/Content/themes/base/jquery.ui.resizable.css" rel="stylesheet">
+        <link href="/Content/themes/base/jquery.ui.selectable.css" rel="stylesheet">
+        <link href="/Content/themes/base/jquery.ui.accordion.css" rel="stylesheet">
+        <link href="/Content/themes/base/jquery.ui.autocomplete.css" rel="stylesheet">
+        <link href="/Content/themes/base/jquery.ui.button.css" rel="stylesheet">
+        <link href="/Content/themes/base/jquery.ui.dialog.css" rel="stylesheet">
+        <link href="/Content/themes/base/jquery.ui.slider.css" rel="stylesheet">
+        <link href="/Content/themes/base/jquery.ui.tabs.css" rel="stylesheet">
+        <link href="/Content/themes/base/jquery.ui.datepicker.css" rel="stylesheet">
+        <link href="/Content/themes/base/jquery.ui.progressbar.css" rel="stylesheet">
+        <link href="/Content/themes/base/jquery.ui.theme.css" rel="stylesheet">
+    </head>
+    <body>
+        <div id="body">
+            <div class="container">
+                <div class="hero-unit">
+                    <h1>Github Commit Viewer</h1>
+                    <p>This application allows you to view a Github repository's commits and optionally view the files that were modified.</p>
+                </div>
+                
+                <div  data-bind="foreach: alerts">
+                    <div data-bind="css: severity">
+                        <button type="button" class="close" data-dismiss="alert" >&times;</button>
+                        <strong data-bind="text: title"></strong> <span data-bind="text: message"></span>
+                    </div>
+                </div>
+
+                <div  class="row">
+                    <div class="span4"></div>
+                    <div class="span4">
+                        <input id="repoName" data-bind="value: repoName" type="text" class="span4" placeholder="Enter the Github repository" />
+                    </div>
+                    <div class="span4">
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="span5"></div>
+                    <div class="span2">
+                        <a class="btn btn-success btn-large btn-block" data-bind="click: getCommits" href="#">
+                            <i class="icon-download icon-white"></i>Fetch!
+                        </a>
+                    </div>
+                    <div class="span5"></div>
+                </div>
+
+                <table id="commitList" class="table table-striped">
+                    <tbody data-bind="foreach: commits">
+                        <tr class="row">
+                            <td class="span12">
+                                <button type="button" class="btn btn-primary pull-right"
+                                    data-bind="click: $root.getFiles, attr: { 'data-target': '#' + sha() }"
+                                    data-toggle="collapse">
+                                    View Files</button>
+                                <h4 data-bind="text: commit.message"></h4>
+                                <div>
+                                    Committed by <span data-bind="text: committer.login"></span>
+                                </div>
+                                <div data-bind="attr: { id: sha }" class="collapse">
+                                    <table class="table table-striped commitFiles ">
+                                        <thead>
+                                            <tr>
+                                                <td>Filename</td>
+                                                <td>Status</td>
+                                                <td>Additions</td>
+                                                <td>Deletions</td>
+                                                <td>Changes</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody data-bind="foreach: commit.files">
+                                            <tr>
+                                                <td><a class="filename" data-bind="text: filename, attr: { href: blob_url }"></a></td>
+                                                <td>
+                                                    <span class="badge"
+                                                        data-bind="text: status, attr: { class: badgeStatus }"></span>
+                                                </td>
+                                                <td><span><i class="icon-plus"></i><span data-bind="text: additions"></span></span></td>
+                                                <td><span><i class="icon-minus"></i><span data-bind="text: deletions"></span></span></td>
+                                                <td><span><i class="icon-pencil"></i><span data-bind="text: changes"></span></span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <script src="/Scripts/jquery-1.9.1.js"></script>
+        <script src="/Scripts/jquery-ui-1.8.24.js"></script>
+        <script src="/Scripts/knockout-2.3.0.debug.js"></script>
+        <script src="/Scripts/knockout.mapping-latest.debug.js"></script>
+        <script src="/Scripts/jquery.unobtrusive-ajax.js"></script>
+        <script src="/Scripts/jquery.validate.js"></script>
+        <script src="/Scripts/jquery.validate.unobtrusive.js"></script>
+        <script src="/Scripts/bootstrap.js"></script>
+        <script src="/Scripts/github/app.js"></script>
+    </body>
+</html>
